@@ -1,0 +1,49 @@
+<div class="bg-dark">
+    <h1 class="text-white"> EasyToLearnCodding <span class="text-center"><h1>Angular visual Demontration</h1></span></h1>
+</div> 
+
+<div class="card-group">
+    <div class="bg-danger">
+        <h1 class="bg-dark text-white">Event Binding</h1>
+        <input type="text" class="form-control" #b>
+        <button class="btn btn-primary" (click)="b">Add</button>
+        <h2>{{b.value}}</h2>
+    </div>
+
+    <div class="bg-secondary">
+        <h1 class="bg-dark text-white">Event Binding use $event</h1>
+        <button class="btn btn-outline-dark text-white" value="Mobile" (click)="onInputClick($event)">Mobile</button>
+        <button class="btn btn-outline-dark text-white" value="TV" (click)="onInputClick($event)">TV</button>
+        <button class="btn btn-outline-dark text-white" value="Laptop" (click)="onInputClick($event)">Laptop</button>
+        <h4>{{msg}}</h4>
+    </div>
+    
+    <div class="bg-info">
+        <h1 class="bg-dark text-white">Propery Binding</h1>
+        <input type="text" [disabled]="disabledBox" [value]="name">
+        <h2 class="bg-dark text-white">String Interpolation</h2>
+        <input type="text" disabled={{disabledBox}} value="{{name}}"><br>
+        <button class="btn btn-primary" (click)="enableBox()">Enable Textbox</button>
+    </div>
+
+    <div class="bg-primary">
+        <h1 class="bg-dark text-white">Two Way Data Binding</h1>
+        <input type="name" class="form-control" [(ngModel)]="Uname"/>
+        <h2>{{Uname}}</h2>
+    </div>
+
+    <div class="bg-success">
+        <h1 class="bg-dark text-white"> Radio Button Demonstration</h1>
+        <label id="example-radio-group-label">Pick your favorite season</label>
+        <mat-radio-group
+        aria-labelledby="example-radio-group-label"
+        class="example-radio-group"
+        [(ngModel)]="favoriteSeason">
+        <mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season">
+            {{season}}
+        </mat-radio-button>
+        </mat-radio-group>
+        <div>Your favorite season is: {{favoriteSeason}}</div>
+    </div>
+
+</div>
