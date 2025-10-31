@@ -1,36 +1,34 @@
-<p>
-    <mat-toolbar color="" id="tool">
-        <span class="text-white">EasyToLearnCodding</span>
-      <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>My App</span>
-      <span class="example-spacer"></span>
-      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>favorite</mat-icon>
-      </button>
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-        <mat-icon>share</mat-icon>
-      </button> -->
-
-      <header class="text-center">
-        <nav>
-          <ul class="nav nav-tabs" id="list">
-            <li class="nav-item"><a class="nav-link" routerLink='/home'>Home</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink='/about'>About</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink='/blog'>Blog</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink='/contact'>Contact</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink='/quiz'>Quiz</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink='/angular-demo'>AngularDemo</a></li>
-          </ul>
-        </nav>
-    </header>
-
-    </mat-toolbar>
-  </p>
+<mat-toolbar color="primary" id="tool">
+  <span class="toolbar-title">EasyToLearnCodding</span>
+  <span class="spacer"></span>
   
-  <router-outlet></router-outlet>
+  <header class="toolbar-nav">
+    <nav class="main-nav">
+      <a class="nav-link" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Home</a>
+      <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
+      <a class="nav-link" routerLink="/blog" routerLinkActive="active">Blog</a>
+      <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
+      <a class="nav-link" routerLink="/quiz" routerLinkActive="active">Quiz</a>
+      
+      <span class="auth-section" *ngIf="isAuthenticated">
+        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+          <mat-icon>dashboard</mat-icon> Dashboard
+        </a>
+        <a class="nav-link" *ngIf="isAdmin" routerLink="/dashboard/quiz-admin" routerLinkActive="active">
+          <mat-icon>quiz</mat-icon> Quiz Builder
+        </a>
+        <span class="user-info">{{ currentUser?.name }}</span>
+        <button mat-icon-button (click)="logout()" matTooltip="Logout" aria-label="Logout">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </span>
+      
+      <span class="auth-section" *ngIf="!isAuthenticated">
+        <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+        <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
+      </span>
+    </nav>
+  </header>
+</mat-toolbar>
 
-  <!-- <div>
-    <img src="../../assets/image/devlepor.jpg" alt="image">
-  </div> -->
+<router-outlet></router-outlet>

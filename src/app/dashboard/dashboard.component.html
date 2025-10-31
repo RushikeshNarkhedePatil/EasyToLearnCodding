@@ -1,0 +1,103 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>Welcome, {{ currentUser?.name }}!</h1>
+      <p class="user-role" [class.admin]="isAdmin()">
+        {{ isAdmin() ? 'Administrator' : 'User' }}
+      </p>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" routerLink="/dashboard/upload" class="upload-btn">
+        <mat-icon>add</mat-icon> Add Content
+      </button>
+      <button mat-stroked-button color="accent" *ngIf="isAdmin()" routerLink="/dashboard/blog-editor">
+        <mat-icon>post_add</mat-icon> New Blog Post
+      </button>
+      <button mat-stroked-button color="primary" *ngIf="isAdmin()" routerLink="/dashboard/quiz-admin">
+        <mat-icon>quiz</mat-icon> Quiz Builder
+      </button>
+      <button mat-icon-button (click)="logout()" matTooltip="Logout" aria-label="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <mat-button-toggle-group [(value)]="filterType" (change)="onFilterChange($event.value)">
+      <mat-button-toggle value="all">All</mat-button-toggle>
+      <mat-button-toggle value="video">Videos</mat-button-toggle>
+      <mat-button-toggle value="image">Images</mat-button-toggle>
+      <mat-button-toggle value="video-link">Video Links</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div class="content-grid" *ngIf="filteredItems.length > 0; else noContent">
+    <div class="content-card" *ngFor="let item of filteredItems">
+      <div class="card-header">
+        <h3>{{ item.title }}</h3>
+        <div class="card-actions" *ngIf="isAdmin()">
+          <button mat-icon-button (click)="publishContent(item.id)" *ngIf="item.status === 'draft'" matTooltip="Publish">
+            <mat-icon>publish</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteContent(item.id)" matTooltip="Delete" color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-content">
+        <div class="media-container" *ngIf="item.type === 'video-link'">
+          <iframe
+            [src]="getEmbedUrl(item.url || '')"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="video-iframe">
+          </iframe>
+          <div class="link-actions" *ngIf="item.url">
+            <a [href]="item.url" target="_blank" rel="noopener" mat-stroked-button color="primary">
+              Open video in new tab
+            </a>
+          </div>
+        </div>
+        <div class="media-container" *ngIf="item.type === 'video' && item.fileUrl">
+          <video controls class="media-player">
+            <source [src]="item.fileUrl" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="media-container" *ngIf="item.type === 'image' && item.fileUrl">
+          <img [src]="item.fileUrl" [alt]="item.title" class="media-image" (click)="openPreview(item)">
+        </div>
+
+        <p class="description" *ngIf="item.description">{{ item.description }}</p>
+        <div class="card-meta">
+          <span class="badge" [class.draft]="item.status === 'draft'">{{ item.status }}</span>
+          <span class="date">{{ item.uploadedAt | date:'short' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noContent>
+    <div class="no-content">
+      <mat-icon>inbox</mat-icon>
+      <p>No content available</p>
+      <button mat-raised-button color="primary" routerLink="/dashboard/upload">
+        Add Your First Content
+      </button>
+    </div>
+  </ng-template>
+
+  <div class="quiz-results" *ngIf="quizResults.length > 0">
+    <h2>Your Quiz Results</h2>
+    <mat-list>
+      <mat-list-item *ngFor="let r of quizResults">
+        <span>Score: {{ r.score }}/{{ r.total }}</span>
+        <span class="spacer"></span>
+        <span>{{ r.attemptedAt | date:'short' }}</span>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
+

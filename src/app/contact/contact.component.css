@@ -1,0 +1,33 @@
+.contact {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 16px;
+  display: grid;
+  gap: 16px;
+}
+
+.profile p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.links a {
+  margin-right: 12px;
+  text-decoration: none;
+}
+
+.form-card .full {
+  width: 100%;
+}
+
+.actions {
+  margin-top: 8px;
+}
+
+.success {
+  margin-top: 8px;
+  color: #2e7d32;
+}
+
+

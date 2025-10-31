@@ -1,0 +1,122 @@
+<div class="upload-container">
+  <div class="upload-card">
+    <div class="upload-header">
+      <h1>Add New Content</h1>
+      <button mat-icon-button routerLink="/dashboard" matTooltip="Go back to dashboard" aria-label="Back">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+
+    <div class="upload-type-selector">
+      <mat-button-toggle-group [(value)]="uploadType" (change)="onUploadTypeChange($event.value)">
+        <mat-button-toggle value="video-link">
+          <mat-icon>link</mat-icon> Video Link
+        </mat-button-toggle>
+        <mat-button-toggle value="video">
+          <mat-icon>videocam</mat-icon> Upload Video
+        </mat-button-toggle>
+        <mat-button-toggle value="image">
+          <mat-icon>image</mat-icon> Upload Image
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="upload-form">
+      <div class="form-group">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" placeholder="Enter content title">
+          <mat-icon matPrefix>title</mat-icon>
+          <mat-error *ngIf="title?.hasError('required')">Title is required</mat-error>
+          <mat-error *ngIf="title?.hasError('minlength')">Title must be at least 3 characters</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="4" placeholder="Enter content description (optional)"></textarea>
+          <mat-icon matPrefix>description</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group" *ngIf="uploadType === 'video-link'">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Video URL</mat-label>
+          <input matInput type="url" formControlName="url" placeholder="Enter video URL (YouTube, Vimeo, etc.)">
+          <mat-icon matPrefix>link</mat-icon>
+          <mat-error *ngIf="url?.hasError('required')">Video URL is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="file-upload-section" *ngIf="uploadType !== 'video-link'">
+        <div 
+          class="drop-zone" 
+          [class.dragging]="isDragging"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)">
+          <input 
+            type="file" 
+            [accept]="uploadType === 'image' ? 'image/*' : 'video/*'"
+            [multiple]="true"
+            (change)="onFileSelected($event)"
+            id="file-input"
+            class="file-input">
+          
+          <div class="drop-zone-content">
+            <mat-icon class="upload-icon">cloud_upload</mat-icon>
+            <p class="drop-text">Drag and drop {{ uploadType === 'image' ? 'images' : 'videos' }} here</p>
+            <p class="or-text">or</p>
+            <label for="file-input" class="browse-btn">
+              <button mat-raised-button type="button" color="primary">Browse Files</button>
+            </label>
+            <p class="file-info">Supports: {{ uploadType === 'image' ? 'JPEG, PNG, GIF, WebP' : 'MP4, WebM, OGG' }}</p>
+          </div>
+        </div>
+
+        <div class="uploaded-files" *ngIf="uploadedFiles.length > 0">
+          <h3>Uploaded Files</h3>
+          <div class="file-list">
+            <div class="file-item" *ngFor="let uploadedFile of uploadedFiles; let i = index">
+              <div class="file-info-display">
+                <mat-icon>{{ uploadType === 'image' ? 'image' : 'videocam' }}</mat-icon>
+                <span>{{ uploadedFile.file.name }}</span>
+                <span class="file-size">({{ formatFileSize(uploadedFile.file.size) }})</span>
+              </div>
+              <button mat-icon-button (click)="removeFile(i)" color="warn" matTooltip="Remove file">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="upload-progress" *ngIf="selectedFiles.length > 0">
+          <div class="progress-item" *ngFor="let file of selectedFiles">
+            <span>{{ file.name }}</span>
+            <mat-progress-bar 
+              mode="determinate" 
+              [value]="uploadProgress[file.name] || 0">
+            </mat-progress-bar>
+          </div>
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="form-actions">
+        <button mat-button type="button" routerLink="/dashboard">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="uploadForm.invalid || (uploadType !== 'video-link' && uploadedFiles.length === 0)">
+          {{ uploadType === 'video-link' ? 'Add Link' : 'Upload Content' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

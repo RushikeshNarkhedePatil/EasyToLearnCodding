@@ -1,4 +1,59 @@
+<div class="home">
+  <section class="hero">
+    <div class="hero-content">
+      <h1>EasyToLearnCodding</h1>
+      <p class="tagline">Learn by doing: videos, images, blogs and interactive quizzes.</p>
+      <div class="actions">
+        <a mat-raised-button color="primary" routerLink="/blog">Read Blog</a>
+        <a mat-stroked-button color="accent" routerLink="/quiz">Take a Quiz</a>
+        <a mat-button routerLink="/contact">Contact</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true"></div>
+  </section>
 
-  <div>
-    <img src="../../assets/image/devlepor.jpg" alt="image">
-  </div>
+  <section class="features">
+    <mat-card class="feature">
+      <mat-card-header>
+        <mat-icon>play_circle</mat-icon>
+        <mat-card-title>Video Links</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        Curated video links to accelerate your learning path.
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="feature">
+      <mat-card-header>
+        <mat-icon>image</mat-icon>
+        <mat-card-title>Image Gallery</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        Visual references and diagrams for quick understanding.
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="feature">
+      <mat-card-header>
+        <mat-icon>quiz</mat-icon>
+        <mat-card-title>Interactive Quizzes</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        Practice and track your progress with instant scoring.
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <section class="cta">
+    <mat-card>
+      <mat-card-title>Ready to start?</mat-card-title>
+      <mat-card-content>
+        <p>Browse the blog for tips, then test yourself with a quiz.</p>
+        <div class="actions">
+          <a mat-raised-button color="primary" routerLink="/blog">Explore Blog</a>
+          <a mat-stroked-button color="primary" routerLink="/quiz">Start Quiz</a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>

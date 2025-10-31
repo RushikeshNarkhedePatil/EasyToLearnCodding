@@ -1,1 +1,51 @@
-<p>about works!</p>
+<div class="about">
+  <mat-card class="hero">
+    <div class="hero-head">
+      <img *ngIf="profile.photoUrl" [src]="profile.photoUrl" alt="Profile photo" class="avatar">
+      <div>
+        <mat-card-title>{{ profile.name }}</mat-card-title>
+        <mat-card-subtitle>{{ profile.tagline }}</mat-card-subtitle>
+      </div>
+    </div>
+    <mat-card-content>
+      <p class="summary">{{ profile.summary }}</p>
+      <p class="meta">
+        <mat-icon>place</mat-icon> {{ profile.location }}
+        <span class="spacer"></span>
+        <mat-icon>email</mat-icon> {{ profile.email }}
+      </p>
+      <p class="links">
+        <a [href]="profile.github" target="_blank" rel="noopener">
+          <mat-icon>code</mat-icon> GitHub
+        </a>
+        <a [href]="profile.linkedin" target="_blank" rel="noopener">
+          <mat-icon>business_center</mat-icon> LinkedIn
+        </a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="grid">
+    <mat-card class="skills">
+      <mat-card-title>Skills & Technologies</mat-card-title>
+      <mat-card-content>
+        <div class="chips">
+          <span class="chip" *ngFor="let s of skills">{{ s }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="experience">
+      <mat-card-title>Experience</mat-card-title>
+      <mat-card-content>
+        <div class="exp-item" *ngFor="let exp of experience">
+          <h3>{{ exp.title }}</h3>
+          <p class="company">{{ exp.company }}</p>
+          <ul>
+            <li *ngFor="let d of exp.details">{{ d }}</li>
+          </ul>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

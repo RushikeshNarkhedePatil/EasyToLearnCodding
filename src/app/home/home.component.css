@@ -1,12 +1,16 @@
-#tool{
-    background: #000;
+.home { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
 
-}
-a:hover{
-    background-color: #fff;
-}
-img{
-    width: 100%;
-    height: auto;
-    position:fixed;
-}
+.hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; align-items: center; padding: 24px 0; }
+.hero-content h1 { margin: 0 0 8px; font-size: 42px; }
+.tagline { color: #555; margin-bottom: 16px; }
+.actions a { margin-right: 12px; }
+
+.hero-art { height: 220px; border-radius: 12px; background: linear-gradient(135deg, #673ab7 0%, #03a9f4 100%); opacity: 0.9; }
+
+.features { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 24px 0; }
+@media (min-width: 900px) { .features { grid-template-columns: 1fr 1fr 1fr; } }
+.feature mat-card-header { align-items: center; }
+.feature mat-icon { margin-right: 8px; }
+
+.cta mat-card { padding-bottom: 8px; }
+.cta .actions a { margin-right: 12px; }

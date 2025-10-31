@@ -1,1 +1,60 @@
-<p>blog works!</p>
+<div class="blog-page">
+  <section class="hero">
+    <div class="hero-content">
+      <span class="pill">Blog</span>
+      <h1>In-depth guides, tips & tutorials</h1>
+      <p>Stay ahead with curated articles written by our mentors. Learn new concepts, explore best practices, and sharpen your skills with every post.</p>
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input
+          type="text"
+          placeholder="Search articles"
+          [value]="searchTerm"
+          #searchInput
+          (input)="onSearch(searchInput.value)"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="content" *ngIf="posts.length === 0">
+    <div class="empty">
+      <mat-icon>article</mat-icon>
+      <p>No posts yet. Check back soon for fresh content.</p>
+    </div>
+  </section>
+
+  <section class="content" *ngIf="posts.length > 0">
+    <div class="section-header">
+      <h2>Latest Articles</h2>
+      <p *ngIf="searchTerm">Showing {{ filteredPosts.length }} result(s) for “{{ searchTerm }}”.</p>
+      <p *ngIf="!searchTerm">Browse the newest tutorials, case studies, and walkthroughs.</p>
+    </div>
+
+    <div class="posts-grid" *ngIf="filteredPosts.length > 0; else noMatches">
+      <article class="post-card" *ngFor="let post of filteredPosts" (click)="openPost(post.id)">
+        <div class="thumbnail" [ngClass]="{ placeholder: !post.coverImageUrl }" [style.backgroundImage]="post.coverImageUrl ? 'url(' + post.coverImageUrl + ')' : ''">
+          <span class="placeholder-text" *ngIf="!post.coverImageUrl">EasyToLearn Coding</span>
+          <span class="badge" *ngIf="isNew(post)">New</span>
+        </div>
+        <div class="post-body">
+          <div class="meta">
+            <span>{{ post.authorName }}</span>
+            <span class="dot">•</span>
+            <span>{{ getCreatedDate(post) | date: 'MMM d, y' }}</span>
+          </div>
+          <h3>{{ post.title }}</h3>
+          <p class="excerpt">{{ getExcerpt(getFirstTextSection(post)) }}</p>
+          <button mat-button color="primary">Read more</button>
+        </div>
+      </article>
+    </div>
+
+    <ng-template #noMatches>
+      <div class="empty">
+        <mat-icon>travel_explore</mat-icon>
+        <p>No articles found for “{{ searchTerm }}”. Try another keyword.</p>
+      </div>
+    </ng-template>
+  </section>
+</div>

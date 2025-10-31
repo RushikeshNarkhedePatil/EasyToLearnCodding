@@ -1,0 +1,68 @@
+.about {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.hero .summary {
+  margin-top: 8px;
+}
+
+.hero-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.hero .meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero .links a {
+  margin-right: 12px;
+  text-decoration: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  background: #e0e0e0;
+  border-radius: 16px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.exp-item h3 {
+  margin: 0 0 4px;
+}
+
+.exp-item .company {
+  color: #666;
+  margin: 0 0 8px;
+}

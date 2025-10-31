@@ -1,10 +1,99 @@
-.example-spacer {
-    flex: 1 1 auto;
-  }
-  #tool{
-    background: #000;
-
+#tool {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-a:hover{
-    background-color: #fff;
+
+.toolbar-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar-nav {
+  display: flex;
+  align-items: center;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: 500;
+}
+
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-info {
+  font-size: 14px;
+  margin-right: 8px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-nav {
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+
+  .nav-link {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .toolbar-title {
+    font-size: 16px;
+  }
+
+  .user-info {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-nav {
+    gap: 4px;
+  }
+
+  .nav-link {
+    padding: 4px 8px;
+  }
+
+  .auth-section {
+    margin-left: 8px;
+    padding-left: 8px;
+  }
 }

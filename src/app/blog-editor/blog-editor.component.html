@@ -1,0 +1,84 @@
+<div class="editor">
+  <div class="header">
+    <h1>New Blog Post</h1>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" placeholder="Enter post title">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Cover image URL (optional)</mat-label>
+      <input matInput formControlName="coverImageUrl" placeholder="https://...">
+    </mat-form-field>
+
+    <div class="section-actions">
+      <button mat-stroked-button type="button" color="primary" (click)="addSection('text')">
+        <mat-icon>notes</mat-icon>
+        Add Text Block
+      </button>
+      <button mat-stroked-button type="button" color="accent" (click)="addSection('code')">
+        <mat-icon>code</mat-icon>
+        Add Code Snippet
+      </button>
+    </div>
+
+    <div formArrayName="sections" class="sections">
+      <mat-card class="section" *ngFor="let section of sections.controls; let i = index" [formGroupName]="i">
+        <mat-card-header>
+          <mat-card-title>
+            {{ section.get('type')?.value === 'code' ? 'Code Snippet' : 'Text Block' }}
+          </mat-card-title>
+          <button mat-icon-button color="warn" type="button" (click)="removeSection(i)" aria-label="Remove section">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-header>
+
+        <mat-card-content>
+          <ng-container [ngSwitch]="section.get('type')?.value">
+            <div *ngSwitchCase="'text'">
+              <mat-form-field appearance="outline" class="full">
+                <mat-label>Paragraph</mat-label>
+                <textarea matInput formControlName="value" rows="6" placeholder="Write your text..."></textarea>
+              </mat-form-field>
+            </div>
+            <div *ngSwitchCase="'code'" class="code-block">
+              <div class="code-meta">
+                <mat-form-field appearance="outline" class="language">
+                  <mat-label>Language</mat-label>
+                  <mat-select formControlName="language">
+                    <mat-option value="text">Plain Text</mat-option>
+                    <mat-option value="javascript">JavaScript</mat-option>
+                    <mat-option value="typescript">TypeScript</mat-option>
+                    <mat-option value="html">HTML</mat-option>
+                    <mat-option value="css">CSS</mat-option>
+                    <mat-option value="python">Python</mat-option>
+                    <mat-option value="java">Java</mat-option>
+                    <mat-option value="c">C</mat-option>
+                    <mat-option value="cpp">C++</mat-option>
+                    <mat-option value="bash">Bash</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <mat-form-field appearance="outline" class="full">
+                <mat-label>Code</mat-label>
+                <textarea matInput formControlName="value" rows="8" placeholder="Paste or write your code snippet..."></textarea>
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="actions">
+      <button mat-button type="button" routerLink="/blog">Cancel</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Publish</button>
+    </div>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+  </form>
+</div>
+
+

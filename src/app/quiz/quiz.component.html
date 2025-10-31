@@ -1,8 +1,71 @@
-<mat-toolbar color="warn">
-    <div class="btn-group text-center" id="quizbtn">
-        <h1 class="bg-dark text-white">Welcome To Quiz Portal &nbsp;</h1>
-        <li><button class="btn btn-outline-primary text-white">First</button></li>
-        <li><button class="btn btn-outline-primary text-white">second</button></li>
-        <li><button class="btn btn-outline-primary text-white">third</button></li>
+<div class="quiz">
+  <div *ngIf="questions.length === 0" class="empty">
+    <p>No questions available. Please contact the admin.</p>
+  </div>
+
+  <div *ngIf="questions.length > 0 && !submitted" class="quiz-container">
+    <div class="quiz-header">
+      <div>
+        <h1>C Quiz</h1>
+        <p>Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}</p>
+      </div>
+      <div class="timer">{{ formattedTime }}</div>
     </div>
-</mat-toolbar>
+
+    <mat-card class="question-card">
+      <mat-card-title>
+        {{ currentQuestion?.question }}
+      </mat-card-title>
+      <mat-card-content>
+        <mat-radio-group [value]="answers[currentQuestionIndex]" (change)="selectAnswer($event.value)">
+          <mat-radio-button class="option" *ngFor="let opt of currentQuestion?.options; let j = index" [value]="j">
+            {{ opt }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="actions">
+      <button mat-stroked-button color="primary" (click)="previousQuestion()" [disabled]="currentQuestionIndex === 0">
+        Previous
+      </button>
+      <button mat-raised-button color="primary" (click)="nextQuestion()">
+        {{ isLastQuestion ? 'Submit' : 'Next' }}
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="submitted" class="result">
+    <mat-card>
+      <mat-card-title>Quiz Result</mat-card-title>
+      <mat-card-content>
+        <div class="result-summary">
+          <div class="score">{{ score?.correct }}/{{ score?.total }}</div>
+          <div class="details">
+            <p class="percentage">{{ percentageScore }}% correct</p>
+            <p class="message">{{ resultMessage }}</p>
+            <p class="time">Time taken: {{ formattedFinalTime }}</p>
+          </div>
+        </div>
+        <div class="actions result-actions">
+          <button mat-raised-button color="primary" (click)="tryAgain()">Try Again</button>
+          <button mat-stroked-button color="primary" (click)="toggleReview()">
+            {{ reviewMode ? 'Hide Review' : 'Review Answers' }}
+          </button>
+          <button mat-button (click)="goToDashboard()">Go to Dashboard</button>
+        </div>
+        <div class="review" *ngIf="reviewMode">
+          <div class="review-item" *ngFor="let q of questions; let i = index">
+            <h3>Q{{ i + 1 }}. {{ q.question }}</h3>
+            <p [class.correct]="answers[i] === q.correctIndex" [class.incorrect]="answers[i] !== q.correctIndex">
+              Your answer: <strong>{{ q.options[answers[i]] || 'Not answered' }}</strong>
+            </p>
+            <p class="correct-line">
+              Correct answer: <strong>{{ q.options[q.correctIndex] }}</strong>
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

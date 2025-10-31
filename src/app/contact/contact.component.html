@@ -1,1 +1,51 @@
-<p>contact works!</p>
+<div class="contact">
+  <h1>Contact</h1>
+
+  <mat-card class="profile">
+    <mat-card-title>{{ profile.name }}</mat-card-title>
+    <mat-card-subtitle>{{ profile.role }}</mat-card-subtitle>
+    <mat-card-content>
+      <p><mat-icon>place</mat-icon> {{ profile.location }}</p>
+      <p><mat-icon>email</mat-icon> {{ profile.email }}</p>
+      <p class="links">
+        <a [href]="profile.github" target="_blank" rel="noopener">
+          <mat-icon>code</mat-icon> GitHub
+        </a>
+        <a [href]="profile.linkedin" target="_blank" rel="noopener">
+          <mat-icon>business_center</mat-icon> LinkedIn
+        </a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="form-card">
+    <mat-card-title>Send a message</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="contactForm" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" placeholder="Your name">
+          <mat-error *ngIf="submitted && contactForm.get('name')?.invalid">Name is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" placeholder="you@example.com">
+          <mat-error *ngIf="submitted && contactForm.get('email')?.invalid">Valid email is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Message</mat-label>
+          <textarea matInput rows="6" formControlName="message" placeholder="How can we help?"></textarea>
+          <mat-error *ngIf="submitted && contactForm.get('message')?.invalid">Message must be at least 10 characters</mat-error>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit">Send</button>
+        </div>
+
+        <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

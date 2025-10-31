@@ -1,0 +1,9 @@
+.quiz-admin { max-width: 1000px; margin: 24px auto; padding: 0 16px; }
+.full { width: 100%; }
+.options { margin: 8px 0; }
+.option { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.opt-field { flex: 1; }
+.editor { margin-bottom: 16px; }
+.q-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+.q-text { margin-right: 8px; }
+

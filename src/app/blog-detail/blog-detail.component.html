@@ -1,0 +1,26 @@
+<div class="blog-detail" *ngIf="post">
+  <div class="header">
+    <h1>{{ post.title }}</h1>
+    <p class="meta">{{ post.authorName }} • {{ post.createdAt | date:'medium' }}</p>
+  </div>
+
+  <img *ngIf="post.coverImageUrl" [src]="post.coverImageUrl" [alt]="post.title" class="cover">
+
+  <div class="content">
+    <ng-container *ngIf="post.sections?.length; else legacyContent">
+      <div class="section" *ngFor="let section of post.sections">
+        <p *ngIf="section.type === 'text'" class="paragraph">{{ section.value }}</p>
+        <pre *ngIf="section.type === 'code'" class="code-block" [attr.data-language]="section.language || 'text'"><code>{{ section.value }}</code></pre>
+      </div>
+    </ng-container>
+    <ng-template #legacyContent>
+      <p class="paragraph" style="white-space: pre-wrap;">{{ post.content }}</p>
+    </ng-template>
+  </div>
+
+  <div class="actions">
+    <button mat-stroked-button color="primary" (click)="goBack()">Back</button>
+  </div>
+</div>
+
+

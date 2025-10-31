@@ -1,0 +1,56 @@
+.editor {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.full {
+  width: 100%;
+}
+
+.actions {
+  margin-top: 12px;
+}
+
+.error {
+  color: #b00020;
+  margin-top: 8px;
+}
+
+.section-actions {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section {
+  padding: 12px;
+}
+
+.section mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0;
+}
+
+.section mat-card-title {
+  font-size: 18px;
+}
+
+.code-block .code-meta {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.code-block .language {
+  min-width: 160px;
+}
+
+

@@ -1,0 +1,54 @@
+<div class="quiz-admin">
+  <h1>Quiz Builder</h1>
+
+  <mat-card class="editor">
+    <mat-card-title>{{ editingId ? 'Edit Question' : 'Add Question' }}</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="addQuestion()">
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Question</mat-label>
+          <input matInput formControlName="question">
+        </mat-form-field>
+
+        <div class="options" formArrayName="options">
+          <div class="option" *ngFor="let _ of options.controls; let i = index">
+            <mat-radio-button [checked]="form.value.correctIndex === i" (change)="setCorrect(i)"></mat-radio-button>
+            <mat-form-field appearance="outline" class="opt-field">
+              <mat-label>Option {{ i + 1 }}</mat-label>
+              <input matInput [formControlName]="i">
+            </mat-form-field>
+            <button mat-icon-button color="warn" type="button" (click)="removeOption(i)" *ngIf="options.length > 2">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        <button mat-stroked-button type="button" (click)="addOption()">Add option</button>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit">{{ editingId ? 'Save Changes' : 'Add Question' }}</button>
+          <button mat-button type="button" (click)="cancelEdit()" *ngIf="editingId">Cancel</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="list">
+    <mat-card-title>Questions</mat-card-title>
+    <mat-list *ngIf="questions.length > 0; else empty">
+      <mat-list-item *ngFor="let q of questions">
+        <div class="q-row">
+          <div class="q-text">{{ q.question }}</div>
+          <span>
+            <button mat-icon-button color="primary" (click)="editQuestion(q)"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button color="warn" (click)="deleteQuestion(q.id)"><mat-icon>delete</mat-icon></button>
+          </span>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <ng-template #empty>
+      <p>No questions yet.</p>
+    </ng-template>
+  </mat-card>
+</div>
+
+
