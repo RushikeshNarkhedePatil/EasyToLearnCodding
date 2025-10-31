@@ -104,6 +104,13 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/EasyToLearnCodding/",
+            "dir": "dist/EasyToLearnCodding"
+          }
         }
       }
     }
