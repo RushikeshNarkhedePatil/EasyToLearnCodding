@@ -1,0 +1,66 @@
+<div class="notes-upload">
+  <header class="page-header">
+    <h1>Upload Notes</h1>
+    <p>Share PDFs, slides, worksheets, or cheat sheets with learners.</p>
+  </header>
+
+  <form [formGroup]="noteForm" (ngSubmit)="submit()" class="upload-form">
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="e.g. Data Structures Cheatsheet" formControlName="title">
+      <mat-error *ngIf="title?.hasError('required')">Title is required</mat-error>
+      <mat-error *ngIf="title?.hasError('minlength')">Title should be at least 3 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Description</mat-label>
+      <textarea matInput rows="4" placeholder="What will learners get from this note?" formControlName="description"></textarea>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="half">
+        <mat-label>Category</mat-label>
+        <input matInput placeholder="e.g. Algorithms" formControlName="category">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half">
+        <mat-label>Resource Type</mat-label>
+        <mat-select formControlName="resourceType">
+          <mat-option *ngFor="let type of resourceTypes" [value]="type">{{ type }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="file-drop" [class.has-file]="selectedFile">
+      <label class="file-label" for="fileInput">
+        <mat-icon>cloud_upload</mat-icon>
+        <span *ngIf="!selectedFile">Drag & drop or click to upload</span>
+        <span *ngIf="selectedFile">File selected: {{ uploadPreview?.name }}</span>
+      </label>
+      <input id="fileInput" type="file" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt">
+      <div class="file-preview" *ngIf="uploadPreview">
+        <div>
+          <strong>{{ uploadPreview.name }}</strong>
+          <p>{{ uploadPreview.type }} • {{ uploadPreview.size }}</p>
+        </div>
+        <button mat-icon-button color="warn" type="button" (click)="removeSelectedFile()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="messages">
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+    </div>
+
+    <div class="actions">
+      <button mat-button type="button" routerLink="/dashboard">Cancel</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="noteForm.invalid || isSubmitting">
+        <mat-icon>save</mat-icon>
+        Publish Notes
+      </button>
+    </div>
+  </form>
+</div>
+

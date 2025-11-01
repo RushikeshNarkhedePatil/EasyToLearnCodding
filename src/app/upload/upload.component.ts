@@ -33,6 +33,12 @@ export class UploadComponent implements OnInit {
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/login']);
+      return;
+    }
+
+    if (!this.authService.hasAnyRole(['admin', 'instructor'])) {
+      this.router.navigate(['/dashboard']);
+      return;
     }
     this.setupUrlValidation();
   }

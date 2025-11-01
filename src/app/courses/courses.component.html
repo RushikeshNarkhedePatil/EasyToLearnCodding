@@ -1,0 +1,32 @@
+<section class="courses">
+  <header class="hero">
+    <h1>Courses</h1>
+    <p>Structured roadmaps created by mentors to help you progress from fundamentals to production-ready skills.</p>
+  </header>
+
+  <div class="grid">
+    <article class="course-card" *ngFor="let course of featuredCourses">
+      <div class="card-header">
+        <h2>{{ course.title }}</h2>
+        <span class="badge" [class.beginner]="course.level === 'Beginner'"
+                              [class.intermediate]="course.level === 'Intermediate'"
+                              [class.advanced]="course.level === 'Advanced'">
+          {{ course.level }}
+        </span>
+      </div>
+      <p class="description">{{ course.description }}</p>
+      <div class="meta">
+        <mat-icon>schedule</mat-icon>
+        <span>{{ course.duration }}</span>
+      </div>
+      <ul class="topics">
+        <li *ngFor="let topic of course.topics">
+          <mat-icon>check_circle</mat-icon>
+          <span>{{ topic }}</span>
+        </li>
+      </ul>
+      <button mat-raised-button color="primary">View Syllabus</button>
+    </article>
+  </div>
+</section>
+

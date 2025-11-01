@@ -1,0 +1,112 @@
+.notes {
+  max-width: 960px;
+  margin: 32px auto;
+  padding: 0 20px 48px;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.hero h1 {
+  font-size: 34px;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  margin: 0 auto;
+  max-width: 620px;
+  color: #4b5563;
+}
+
+.collection {
+  display: grid;
+  gap: 20px;
+}
+
+.loading {
+  max-width: 280px;
+  margin: 0 auto 32px;
+}
+
+.note-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4b5563;
+}
+
+.meta mat-icon {
+  font-size: 18px;
+}
+
+.chip {
+  background: #2563eb;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+}
+
+.resource {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.note-card h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.note-card p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.note-card button {
+  align-self: flex-start;
+}
+
+.empty {
+  text-align: center;
+  color: #6b7280;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.empty mat-icon {
+  font-size: 48px;
+}
+
+@media (max-width: 640px) {
+  .hero h1 {
+    font-size: 26px;
+  }
+}
+

@@ -55,6 +55,40 @@
   margin-bottom: 10px;
 }
 
+.role-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.role-toggle {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+}
+
+.role-toggle ::ng-deep .mat-button-toggle-group {
+  width: 100%;
+}
+
+.role-toggle ::ng-deep .mat-button-toggle {
+  flex: 1;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.role-description {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+  display: none;
+}
+
+.role-description.visible {
+  display: block;
+}
+
 .full-width {
   width: 100%;
 }

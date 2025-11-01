@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService, UserRole } from '../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +15,11 @@ export class RegisterComponent implements OnInit {
   hidePassword: boolean = true;
   hideConfirmPassword: boolean = true;
 
+  accountTypes: { value: UserRole; label: string; description: string }[] = [
+    { value: 'user', label: 'Learner', description: 'Access courses, notes, and quizzes.' },
+    { value: 'instructor', label: 'Instructor', description: 'Create notes and share learning material with students.' }
+  ];
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -24,7 +29,8 @@ export class RegisterComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]]
+      confirmPassword: ['', [Validators.required]],
+      role: ['user', [Validators.required]]
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -49,9 +55,9 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      const { name, email, password } = this.registerForm.value;
-      
-      if (this.authService.register(email, password, name)) {
+      const { name, email, password, role } = this.registerForm.value;
+
+      if (this.authService.register(email, password, name, role)) {
         this.successMessage = 'Registration successful! Redirecting to login...';
         setTimeout(() => {
           this.router.navigate(['/login']);
@@ -66,7 +72,9 @@ export class RegisterComponent implements OnInit {
   get email() { return this.registerForm.get('email'); }
   get password() { return this.registerForm.get('password'); }
   get confirmPassword() { return this.registerForm.get('confirmPassword'); }
+  get role() { return this.registerForm.get('role'); }
 }
+
 
 
 

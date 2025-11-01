@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
+export type UserRole = 'admin' | 'instructor' | 'user';
+
 export interface User {
   id: string;
   email: string;
   password: string;
-  role: 'admin' | 'user';
+  role: UserRole;
   name: string;
 }
 
@@ -42,6 +44,21 @@ export interface BlogContentSection {
   language?: string;
 }
 
+export type NoteResourceType = 'PDF' | 'Cheatsheet' | 'Worksheet' | 'Slides' | 'Other';
+
+export interface NoteResource {
+  id: string;
+  title: string;
+  description?: string;
+  category?: string;
+  resourceType: NoteResourceType;
+  fileUrl: string;
+  fileName: string;
+  fileType: string;
+  uploadedBy: string;
+  uploadedAt: Date;
+}
+
 export interface QuizQuestion {
   id: string;
   question: string;
@@ -70,6 +87,7 @@ export class AuthService {
   private blogKey = 'easyToLearn_blog_posts';
   private quizQuestionsKey = 'easyToLearn_quiz_questions';
   private quizAttemptsKey = 'easyToLearn_quiz_attempts';
+  private notesKey = 'easyToLearn_notes';
 
   constructor(private router: Router) {
     // Initialize users if not exist
@@ -84,6 +102,13 @@ export class AuthService {
         },
         {
           id: '2',
+          email: 'instructor@easytocode.com',
+          password: 'instructor123',
+          role: 'instructor',
+          name: 'Instructor User'
+        },
+        {
+          id: '3',
           email: 'user@easytocode.com',
           password: 'user123',
           role: 'user',
@@ -98,6 +123,36 @@ export class AuthService {
       savedUser ? JSON.parse(savedUser) : null
     );
     this.currentUser$ = this.currentUserSubject.asObservable();
+
+    if (!localStorage.getItem(this.notesKey)) {
+      const seedNotes: NoteResource[] = [
+        {
+          id: 'note-1',
+          title: 'C Language Cheatsheet',
+          description: 'Quick syntax reference covering data types, operators, loops, and pointers.',
+          category: 'Programming',
+          resourceType: 'Cheatsheet',
+          fileUrl: '',
+          fileName: 'c-language-cheatsheet.pdf',
+          fileType: 'application/pdf',
+          uploadedBy: 'system',
+          uploadedAt: new Date()
+        },
+        {
+          id: 'note-2',
+          title: 'Angular RxJS Guide',
+          description: 'Common operator patterns and tips for building reactive features.',
+          category: 'Web Development',
+          resourceType: 'PDF',
+          fileUrl: '',
+          fileName: 'angular-rxjs-guide.pdf',
+          fileType: 'application/pdf',
+          uploadedBy: 'system',
+          uploadedAt: new Date()
+        }
+      ];
+      localStorage.setItem(this.notesKey, JSON.stringify(seedNotes));
+    }
   }
 
   login(email: string, password: string): boolean {
@@ -113,7 +168,7 @@ export class AuthService {
     return false;
   }
 
-  register(email: string, password: string, name: string): boolean {
+  register(email: string, password: string, name: string, role: UserRole = 'user'): boolean {
     const users: User[] = JSON.parse(localStorage.getItem(this.usersKey) || '[]');
     
     if (users.some(u => u.email === email)) {
@@ -124,13 +179,33 @@ export class AuthService {
       id: Date.now().toString(),
       email,
       password,
-      role: 'user',
+      role,
       name
     };
 
     users.push(newUser);
     localStorage.setItem(this.usersKey, JSON.stringify(users));
     return true;
+  }
+
+  async socialLogin(profile: { id: string; email: string; name: string; provider: string; role?: UserRole }): Promise<void> {
+    const users: User[] = JSON.parse(localStorage.getItem(this.usersKey) || '[]');
+    let user = users.find(u => u.email === profile.email);
+
+    if (!user) {
+      user = {
+        id: profile.id,
+        email: profile.email,
+        password: '',
+        role: profile.role ?? 'user',
+        name: profile.name
+      };
+      users.push(user);
+      localStorage.setItem(this.usersKey, JSON.stringify(users));
+    }
+
+    localStorage.setItem(this.currentUserKey, JSON.stringify(user));
+    this.currentUserSubject.next(user);
   }
 
   logout(): void {
@@ -149,6 +224,19 @@ export class AuthService {
 
   isAdmin(): boolean {
     return this.currentUserSubject.value?.role === 'admin';
+  }
+
+  isInstructor(): boolean {
+    return this.currentUserSubject.value?.role === 'instructor';
+  }
+
+  getCurrentRole(): UserRole | 'guest' {
+    return this.currentUserSubject.value?.role ?? 'guest';
+  }
+
+  hasAnyRole(roles: (UserRole | 'guest')[]): boolean {
+    const currentRole = this.getCurrentRole();
+    return roles.includes(currentRole as UserRole | 'guest');
   }
 
   // Content Management Methods
@@ -197,7 +285,7 @@ export class AuthService {
   }
 
   // File upload simulation (in real app, this would upload to server)
-  uploadFile(file: File, type: 'video' | 'image'): Promise<string> {
+  uploadFile(file: File, type: 'video' | 'image' | 'document'): Promise<string> {
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = () => {
@@ -208,6 +296,37 @@ export class AuthService {
       };
       reader.readAsDataURL(file);
     });
+  }
+
+  // Note methods
+  getNotes(): NoteResource[] {
+    const notes = JSON.parse(localStorage.getItem(this.notesKey) || '[]') as NoteResource[];
+    return notes.map(note => ({
+      ...note,
+      uploadedAt: new Date(note.uploadedAt)
+    }));
+  }
+
+  addNote(note: Omit<NoteResource, 'id' | 'uploadedBy' | 'uploadedAt'>): boolean {
+    const user = this.getCurrentUser();
+    if (!user || !this.hasAnyRole(['admin', 'instructor'])) return false;
+    const notes = this.getNotes();
+    const newNote: NoteResource = {
+      ...note,
+      id: Date.now().toString(),
+      uploadedBy: user.id,
+      uploadedAt: new Date()
+    };
+    notes.unshift(newNote);
+    localStorage.setItem(this.notesKey, JSON.stringify(notes));
+    return true;
+  }
+
+  deleteNote(id: string): boolean {
+    if (!this.hasAnyRole(['admin', 'instructor'])) return false;
+    const notes = this.getNotes().filter(n => n.id !== id);
+    localStorage.setItem(this.notesKey, JSON.stringify(notes));
+    return true;
   }
 
   // Blog Methods

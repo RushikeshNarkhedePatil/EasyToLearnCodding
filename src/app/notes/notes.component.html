@@ -1,0 +1,48 @@
+<section class="notes">
+  <header class="hero">
+    <h1>Notes & Study Material</h1>
+    <p>Download ready-to-revise resources curated by our mentors to accelerate your learning journey.</p>
+    <button *ngIf="canManageNotes" mat-stroked-button color="primary" routerLink="/dashboard/notes-upload">
+      <mat-icon>upload_file</mat-icon>
+      Upload New Notes
+    </button>
+  </header>
+
+  <div class="loading" *ngIf="isLoading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+
+  <div class="collection" *ngIf="!isLoading && notes.length > 0; else emptyState">
+    <article class="note-card" *ngFor="let note of notes">
+      <div class="card-header">
+        <span class="chip" *ngIf="note.category">{{ note.category }}</span>
+        <span class="resource">{{ note.resourceType }}</span>
+      </div>
+      <h2>{{ note.title }}</h2>
+      <p *ngIf="note.description">{{ note.description }}</p>
+      <div class="meta">
+        <mat-icon>calendar_today</mat-icon>
+        <span>{{ note.uploadedAt | date:'mediumDate' }}</span>
+      </div>
+      <a mat-stroked-button color="primary" *ngIf="note.fileUrl; else unavailable"
+         [href]="note.fileUrl" [attr.download]="note.fileName">
+        <mat-icon>download</mat-icon>
+        Download
+      </a>
+      <ng-template #unavailable>
+        <button mat-stroked-button color="primary" disabled>Download Unavailable</button>
+      </ng-template>
+    </article>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="empty">
+      <mat-icon>description</mat-icon>
+      <p>No notes have been published yet.</p>
+      <button *ngIf="canManageNotes" mat-raised-button color="primary" routerLink="/dashboard/notes-upload">
+        Upload Your First Note
+      </button>
+    </div>
+  </ng-template>
+</section>
+

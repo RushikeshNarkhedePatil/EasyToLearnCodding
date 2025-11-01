@@ -5,6 +5,8 @@
   <header class="toolbar-nav">
     <nav class="main-nav">
       <a class="nav-link" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Home</a>
+      <a class="nav-link" routerLink="/courses" routerLinkActive="active">Courses</a>
+      <a class="nav-link" routerLink="/notes" routerLinkActive="active">Notes</a>
       <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
       <a class="nav-link" routerLink="/blog" routerLinkActive="active">Blog</a>
       <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
@@ -17,7 +19,7 @@
         <a class="nav-link" *ngIf="isAdmin" routerLink="/dashboard/quiz-admin" routerLinkActive="active">
           <mat-icon>quiz</mat-icon> Quiz Builder
         </a>
-        <span class="user-info">{{ currentUser?.name }}</span>
+        <span class="user-info">{{ currentUser?.name }} <span class="role">({{ roleLabel }})</span></span>
         <button mat-icon-button (click)="logout()" matTooltip="Logout" aria-label="Logout">
           <mat-icon>logout</mat-icon>
         </button>

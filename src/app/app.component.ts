@@ -10,6 +10,8 @@ export class AppComponent implements OnInit {
   title = 'EasyToLearnCodding';
   isAuthenticated: boolean = false;
   isAdmin: boolean = false;
+  isInstructor: boolean = false;
+  roleLabel: string = 'Guest';
   currentUser: any = null;
 
   constructor(private authService: AuthService) {}
@@ -18,11 +20,24 @@ export class AppComponent implements OnInit {
     this.authService.currentUser$.subscribe(user => {
       this.isAuthenticated = !!user;
       this.isAdmin = user?.role === 'admin';
+      this.isInstructor = user?.role === 'instructor';
+      this.roleLabel = user ? this.formatRoleLabel(user.role) : 'Guest';
       this.currentUser = user;
     });
   }
 
   logout(): void {
     this.authService.logout();
+  }
+
+  private formatRoleLabel(role: string): string {
+    switch (role) {
+      case 'admin':
+        return 'Administrator';
+      case 'instructor':
+        return 'Instructor';
+      default:
+        return 'Learner';
+    }
   }
 }

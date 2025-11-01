@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { SocialAuthService } from '../services/social-auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,12 +14,14 @@ export class LoginComponent implements OnInit {
   errorMessage: string = '';
   returnUrl: string = '';
   hidePassword: boolean = true;
+  isSocialLoading = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private socialAuth: SocialAuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -50,5 +53,18 @@ export class LoginComponent implements OnInit {
 
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
+
+  async onGoogleSignIn(): Promise<void> {
+    this.errorMessage = '';
+    this.isSocialLoading = true;
+    try {
+      await this.socialAuth.signInWithGoogle();
+      this.router.navigate([this.returnUrl || '/dashboard']);
+    } catch (error) {
+      this.errorMessage = 'Google sign-in failed. Please try again.';
+    } finally {
+      this.isSocialLoading = false;
+    }
+  }
 }
 

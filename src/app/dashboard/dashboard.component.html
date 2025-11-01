@@ -2,16 +2,19 @@
   <div class="dashboard-header">
     <div class="header-content">
       <h1>Welcome, {{ currentUser?.name }}!</h1>
-      <p class="user-role" [class.admin]="isAdmin()">
-        {{ isAdmin() ? 'Administrator' : 'User' }}
+      <p class="user-role" [class.admin]="isAdmin()" [class.instructor]="isInstructor()">
+        {{ roleLabel }}
       </p>
     </div>
     <div class="header-actions">
-      <button mat-raised-button color="primary" routerLink="/dashboard/upload" class="upload-btn">
+      <button mat-raised-button color="primary" routerLink="/dashboard/upload" class="upload-btn" *ngIf="canManageContent()">
         <mat-icon>add</mat-icon> Add Content
       </button>
       <button mat-stroked-button color="accent" *ngIf="isAdmin()" routerLink="/dashboard/blog-editor">
         <mat-icon>post_add</mat-icon> New Blog Post
+      </button>
+      <button mat-stroked-button color="primary" *ngIf="canUploadNotes()" routerLink="/dashboard/notes-upload">
+        <mat-icon>upload_file</mat-icon> Upload Notes
       </button>
       <button mat-stroked-button color="primary" *ngIf="isAdmin()" routerLink="/dashboard/quiz-admin">
         <mat-icon>quiz</mat-icon> Quiz Builder

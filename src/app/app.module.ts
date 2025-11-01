@@ -17,6 +17,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 //components
 import { QuizComponent } from './quiz/quiz.component';
 import { AboutComponent } from './about/about.component';
@@ -31,6 +32,9 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UploadComponent } from './upload/upload.component';
 import { QuizAdminComponent } from './quiz-admin/quiz-admin.component';
+import { CoursesComponent } from './courses/courses.component';
+import { NotesComponent } from './notes/notes.component';
+import { NotesUploadComponent } from './dashboard/notes-upload/notes-upload.component';
 //import forms module
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -41,17 +45,20 @@ const appRoutes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'about', component: AboutComponent },
+    { path: 'courses', component: CoursesComponent },
+    { path: 'notes', component: NotesComponent },
     { path: 'blog', component: BlogComponent },
     { path: 'blog/:id', component: BlogDetailComponent },
     { path: 'contact', component: ContactComponent },
     { path: 'quiz', component: QuizComponent },
-    { path: 'dashboard/quiz-admin', component: QuizAdminComponent, canActivate: [AuthGuard] },
+    { path: 'dashboard/quiz-admin', component: QuizAdminComponent, canActivate: [AuthGuard], data: { roles: ['admin'] } },
     { path: 'angular-demo', component: AngularDemoComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-    { path: 'dashboard/upload', component: UploadComponent, canActivate: [AuthGuard] },
-    { path: 'dashboard/blog-editor', component: BlogEditorComponent, canActivate: [AuthGuard] }
+    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { roles: ['admin', 'instructor', 'user'] } },
+    { path: 'dashboard/upload', component: UploadComponent, canActivate: [AuthGuard], data: { roles: ['admin', 'instructor'] } },
+    { path: 'dashboard/notes-upload', component: NotesUploadComponent, canActivate: [AuthGuard], data: { roles: ['admin', 'instructor'] } },
+    { path: 'dashboard/blog-editor', component: BlogEditorComponent, canActivate: [AuthGuard], data: { roles: ['admin'] } }
 ];
 @NgModule({
   declarations: [
@@ -68,7 +75,10 @@ const appRoutes: Routes = [
     UploadComponent,
     QuizAdminComponent,
     BlogDetailComponent,
-    BlogEditorComponent
+    BlogEditorComponent,
+    CoursesComponent,
+    NotesComponent,
+    NotesUploadComponent
   ],
   imports: [
     BrowserModule,
@@ -89,6 +99,7 @@ const appRoutes: Routes = [
     MatCardModule,
     MatListModule,
     MatSelectModule,
+    MatSnackBarModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [],

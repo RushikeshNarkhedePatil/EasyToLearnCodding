@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AuthService, ContentItem } from '../services/auth.service';
+import { AuthService, ContentItem, UserRole } from '../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   filterType: 'all' | 'video' | 'image' | 'video-link' = 'all';
 
   quizResults: { score: number; total: number; attemptedAt: Date }[] = [];
+  roleLabel = '';
 
   constructor(
     private authService: AuthService,
@@ -28,6 +29,7 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
+    this.roleLabel = this.formatRoleLabel(this.currentUser.role);
     this.loadContent();
     this.loadQuizResults();
   }
@@ -80,6 +82,18 @@ export class DashboardComponent implements OnInit {
     return this.authService.isAdmin();
   }
 
+  isInstructor(): boolean {
+    return this.authService.isInstructor();
+  }
+
+  canManageContent(): boolean {
+    return this.authService.hasAnyRole(['admin', 'instructor']);
+  }
+
+  canUploadNotes(): boolean {
+    return this.authService.hasAnyRole(['admin', 'instructor']);
+  }
+
   logout(): void {
     this.authService.logout();
   }
@@ -98,6 +112,17 @@ export class DashboardComponent implements OnInit {
     // For images, we can implement a modal preview
     // This is a simple implementation - could be enhanced with a modal dialog
     window.open(item.fileUrl, '_blank');
+  }
+
+  private formatRoleLabel(role: UserRole): string {
+    switch (role) {
+      case 'admin':
+        return 'Administrator';
+      case 'instructor':
+        return 'Instructor';
+      default:
+        return 'Learner';
+    }
   }
 }
 

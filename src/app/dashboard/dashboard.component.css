@@ -35,6 +35,11 @@
   font-weight: 500;
 }
 
+.user-role.instructor {
+  color: #10b981;
+  font-weight: 500;
+}
+
 .header-actions {
   display: flex;
   gap: 10px;
@@ -210,6 +215,7 @@
     justify-content: flex-start;
   }
 }
+
 
 
 

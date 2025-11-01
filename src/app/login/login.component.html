@@ -5,6 +5,17 @@
       <p>Sign in to access your dashboard</p>
     </div>
 
+    <div class="social-logins">
+      <button mat-stroked-button color="primary" class="social-button" (click)="onGoogleSignIn()" [disabled]="isSocialLoading">
+        <span class="google-icon">G</span>
+        <span>{{ isSocialLoading ? 'Connecting...' : 'Continue with Google' }}</span>
+      </button>
+    </div>
+
+    <div class="divider">
+      <span>or sign in with email</span>
+    </div>
+
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
         <mat-form-field appearance="outline" class="full-width">
@@ -44,7 +55,8 @@
       <div class="demo-credentials">
         <p><strong>Demo Credentials:</strong></p>
         <p>Admin: admin@easytocode.com / admin123</p>
-        <p>User: user@easytocode.com / user123</p>
+        <p>Instructor: instructor@easytocode.com / instructor123</p>
+        <p>Learner: user@easytocode.com / user123</p>
       </div>
     </form>
   </div>
